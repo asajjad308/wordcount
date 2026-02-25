@@ -2,7 +2,7 @@
   "name": "Free Online Word Counter",
   "short_name": "WordCountPro",
   "description": "Real-time word, character, sentence and reading time counter.",
-  "start_url": "/word-counter.html",
+  "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#FAFAF8",
   "theme_color": "#E8593A",
