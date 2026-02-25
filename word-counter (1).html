@@ -1,0 +1,1763 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free Online Word Counter – Count Words, Characters & Reading Time</title>
+  <meta name="description"
+    content="Instant free word counter tool. Count words, characters (with/without spaces), sentences, paragraphs, and estimated reading time. No sign-up, real-time results. Perfect for essays, blogs, and writers.">
+  <!-- Open Graph -->
+  <meta property="og:title" content="Free Online Word Counter – Count Words, Characters & Reading Time">
+  <meta property="og:description"
+    content="Instant free word counter. Real-time word, character, sentence & reading time counts. 100% private — no data stored.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://wordcountpro.com/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Free Online Word Counter">
+  <meta name="twitter:description" content="Real-time word, character & reading time counter. Free, fast, private.">
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #FAFAF8;
+      --bg2: #F2F1EE;
+      --bg3: #ECEAE5;
+      --ink: #1A1814;
+      --ink2: #3D3A34;
+      --ink3: #7A7670;
+      --ink4: #B5B1AA;
+      --accent: #E8593A;
+      --accent2: #F07A5F;
+      --accent-bg: rgba(232, 89, 58, 0.07);
+      --accent-bd: rgba(232, 89, 58, 0.2);
+      --teal: #2A9D8F;
+      --teal-bg: rgba(42, 157, 143, 0.08);
+      --amber: #E9A24A;
+      --amber-bg: rgba(233, 162, 74, 0.1);
+      --violet: #7C6FCD;
+      --violet-bg: rgba(124, 111, 205, 0.1);
+      --navy: #264653;
+      --navy-bg: rgba(38, 70, 83, 0.08);
+      --border: rgba(26, 24, 20, 0.1);
+      --border2: rgba(26, 24, 20, 0.06);
+      --shadow: 0 4px 24px rgba(26, 24, 20, 0.07);
+      --shadow-lg: 0 12px 48px rgba(26, 24, 20, 0.12);
+      --r: 14px;
+      --r-sm: 9px;
+    }
+
+    [data-theme="dark"] {
+      --bg: #18171A;
+      --bg2: #222128;
+      --bg3: #2C2B33;
+      --ink: #F0EEE8;
+      --ink2: #C8C4BC;
+      --ink3: #8C8882;
+      --ink4: #5A5650;
+      --accent: #F07A5F;
+      --accent2: #E8593A;
+      --accent-bg: rgba(240, 122, 95, 0.12);
+      --accent-bd: rgba(240, 122, 95, 0.28);
+      --border: rgba(240, 238, 232, 0.1);
+      --border2: rgba(240, 238, 232, 0.06);
+      --shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+      --shadow-lg: 0 12px 48px rgba(0, 0, 0, 0.45);
+    }
+
+    [data-theme="dark"] body {
+      background: var(--bg);
+    }
+
+    [data-theme="dark"] .topnav,
+    [data-theme="dark"] .tool-card,
+    [data-theme="dark"] .tips-card,
+    [data-theme="dark"] .sidebar-ad,
+    [data-theme="dark"] .sa-bottom,
+    [data-theme="dark"] .seo-card,
+    [data-theme="dark"] .faq-item {
+      background: #221F2A;
+      color: var(--ink);
+      border-color: var(--border);
+    }
+
+    [data-theme="dark"] textarea {
+      background: #221F2A;
+      color: var(--ink);
+    }
+
+    [data-theme="dark"] .toolbar-btn {
+      background: #2C2B33;
+      color: var(--ink2);
+      border-color: var(--border);
+    }
+
+    [data-theme="dark"] .nav-cta {
+      background: var(--ink2);
+    }
+
+    [data-theme="dark"] .ad-placeholder,
+    [data-theme="dark"] .ad-rect,
+    [data-theme="dark"] .ad-bottom,
+    [data-theme="dark"] .sa-body,
+    [data-theme="dark"] .sab-body {
+      background: linear-gradient(135deg, #1e1c26, #2a2833);
+    }
+
+    /* Dark mode toggle button */
+    .dark-toggle {
+      width: 36px;
+      height: 20px;
+      background: var(--bg3);
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      position: relative;
+      transition: background 0.25s;
+      flex-shrink: 0;
+    }
+
+    .dark-toggle::after {
+      content: '';
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      background: white;
+      border-radius: 50%;
+      top: 2px;
+      left: 2px;
+      transition: transform 0.25s, background 0.25s;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    }
+
+    [data-theme="dark"] .dark-toggle {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    [data-theme="dark"] .dark-toggle::after {
+      transform: translateX(16px);
+    }
+
+    .dark-toggle-wrap {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 12px;
+      color: var(--ink3);
+      font-weight: 500;
+    }
+
+    /* Paste toast */
+    #paste-toast {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--ink);
+      color: white;
+      padding: 10px 22px;
+      border-radius: 30px;
+      font-size: 13px;
+      font-weight: 600;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s, transform 0.25s;
+      z-index: 999;
+      white-space: nowrap;
+      box-shadow: var(--shadow-lg);
+    }
+
+    #paste-toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── TOPBAR NAV ── */
+    .topnav {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      padding: 0 40px;
+      display: flex;
+      align-items: center;
+      height: 58px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 1px 0 var(--border2);
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      text-decoration: none;
+    }
+
+    .nav-logo-dot {
+      width: 10px;
+      height: 10px;
+      background: var(--accent);
+      border-radius: 50%;
+      display: inline-block;
+      box-shadow: 0 0 0 3px rgba(232, 89, 58, 0.2);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 4px;
+      margin-left: 28px;
+    }
+
+    .nav-link {
+      padding: 6px 14px;
+      border-radius: 7px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--ink3);
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.17s;
+    }
+
+    .nav-link:hover {
+      background: var(--bg2);
+      color: var(--ink);
+    }
+
+    .nav-link.active {
+      background: var(--accent-bg);
+      color: var(--accent);
+    }
+
+    .nav-right {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-cta {
+      padding: 7px 18px;
+      background: var(--ink);
+      color: white;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .nav-cta:hover {
+      background: var(--ink2);
+      transform: translateY(-1px);
+    }
+
+    [data-theme="dark"] .nav-logo {
+      color: var(--ink);
+    }
+
+    /* ── TOP AD BANNER ── */
+    .ad-banner-top {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      min-height: 90px;
+    }
+
+    .ad-placeholder {
+      width: 728px;
+      max-width: 100%;
+      height: 90px;
+      background: linear-gradient(135deg, #f8f7f4 0%, #f0ede8 100%);
+      border: 1.5px dashed var(--border);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink4);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      gap: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ad-placeholder::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(45deg,
+          transparent,
+          transparent 10px,
+          rgba(26, 24, 20, 0.015) 10px,
+          rgba(26, 24, 20, 0.015) 20px);
+    }
+
+    .ad-label-chip {
+      position: absolute;
+      top: 6px;
+      left: 8px;
+      font-size: 9px;
+      padding: 2px 7px;
+      border-radius: 4px;
+      background: var(--accent-bg);
+      color: var(--accent);
+      font-weight: 700;
+      letter-spacing: 0.06em;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      text-align: center;
+      padding: 52px 20px 36px;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 5px 14px;
+      border-radius: 20px;
+      background: var(--accent-bg);
+      border: 1px solid var(--accent-bd);
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(36px, 5vw, 54px);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -1px;
+      color: var(--ink);
+      margin-bottom: 14px;
+    }
+
+    .hero-title span {
+      color: var(--accent);
+    }
+
+    .hero-sub {
+      font-size: 17px;
+      color: var(--ink3);
+      font-weight: 400;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    /* ── MAIN LAYOUT ── */
+    .page-wrap {
+      max-width: 1260px;
+      margin: 0 auto;
+      padding: 0 24px 60px;
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    /* ── TOOL CARD ── */
+    .tool-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      animation: fadeUp 0.4s ease both;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Toolbar */
+    .tool-toolbar {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border2);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--bg);
+    }
+
+    .toolbar-btn {
+      padding: 6px 14px;
+      border-radius: 7px;
+      font-size: 12.5px;
+      font-weight: 600;
+      border: 1px solid var(--border);
+      background: white;
+      color: var(--ink2);
+      cursor: pointer;
+      transition: all 0.17s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .toolbar-btn:hover {
+      border-color: var(--ink3);
+      color: var(--ink);
+    }
+
+    .toolbar-btn.accent {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+      box-shadow: 0 4px 12px rgba(232, 89, 58, 0.25);
+    }
+
+    .toolbar-btn.accent:hover {
+      background: #d44d30;
+    }
+
+    .toolbar-sep {
+      width: 1px;
+      height: 20px;
+      background: var(--border);
+    }
+
+    .toolbar-right {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Textarea */
+    .textarea-wrap {
+      position: relative;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 300px;
+      padding: 22px 24px;
+      border: none;
+      outline: none;
+      resize: vertical;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 15.5px;
+      line-height: 1.75;
+      color: var(--ink);
+      background: white;
+      caret-color: var(--accent);
+    }
+
+    textarea::placeholder {
+      color: var(--ink4);
+      font-style: italic;
+    }
+
+    .char-counter-float {
+      position: absolute;
+      bottom: 12px;
+      right: 16px;
+      font-size: 11px;
+      color: var(--ink4);
+      font-family: 'JetBrains Mono', monospace;
+      background: white;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    /* ── STATS GRID ── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      border-top: 1px solid var(--border2);
+    }
+
+    .stat-cell {
+      padding: 18px 16px;
+      text-align: center;
+      border-right: 1px solid var(--border2);
+      transition: background 0.18s;
+      cursor: default;
+      position: relative;
+    }
+
+    .stat-cell:last-child {
+      border-right: none;
+    }
+
+    .stat-cell:hover {
+      background: var(--bg);
+    }
+
+    .stat-cell.highlight {
+      background: var(--accent-bg);
+    }
+
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 5px;
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      display: block;
+    }
+
+    .stat-cell:nth-child(1) .stat-num {
+      color: var(--accent);
+    }
+
+    .stat-cell:nth-child(2) .stat-num {
+      color: var(--teal);
+    }
+
+    .stat-cell:nth-child(3) .stat-num {
+      color: var(--amber);
+    }
+
+    .stat-cell:nth-child(4) .stat-num {
+      color: var(--violet);
+    }
+
+    .stat-cell:nth-child(5) .stat-num {
+      color: var(--navy);
+    }
+
+    .stat-cell:nth-child(6) .stat-num {
+      color: var(--ink2);
+    }
+
+    .stat-label {
+      font-size: 10.5px;
+      font-weight: 600;
+      color: var(--ink4);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .stat-bounce {
+      animation: statPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes statPop {
+      0% {
+        transform: scale(1);
+      }
+
+      40% {
+        transform: scale(1.18);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    /* ── IN-BETWEEN AD ── */
+    .ad-inline {
+      margin: 20px 0 0;
+      padding: 16px 18px;
+      border-top: 1px solid var(--border2);
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ad-rect {
+      width: 100%;
+      height: 100px;
+      background: linear-gradient(135deg, #f5f3ef 0%, #ece9e3 100%);
+      border: 1.5px dashed var(--border);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink4);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ad-rect::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(26, 24, 20, 0.012) 10px, rgba(26, 24, 20, 0.012) 20px);
+    }
+
+    /* ── DETAIL STATS SECTION ── */
+    .detail-section {
+      padding: 22px 24px;
+      border-top: 1px solid var(--border2);
+    }
+
+    .ds-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--ink4);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 14px;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .detail-item {
+      background: var(--bg);
+      border: 1px solid var(--border2);
+      border-radius: var(--r-sm);
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.17s;
+    }
+
+    .detail-item:hover {
+      border-color: var(--border);
+      background: white;
+    }
+
+    .di-label {
+      font-size: 13px;
+      color: var(--ink3);
+      font-weight: 500;
+    }
+
+    .di-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13.5px;
+      font-weight: 500;
+      color: var(--ink);
+      background: white;
+      border: 1px solid var(--border);
+      padding: 3px 10px;
+      border-radius: 6px;
+    }
+
+    /* Reading time bar */
+    .reading-bar-wrap {
+      margin-top: 14px;
+    }
+
+    .rbar-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--ink3);
+      margin-bottom: 7px;
+      font-weight: 500;
+    }
+
+    .rbar-track {
+      height: 8px;
+      background: var(--bg3);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .rbar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: 4px;
+      transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      width: 0%;
+    }
+
+    /* Keyword density */
+    .keywords-wrap {
+      margin-top: 16px;
+    }
+
+    .kw-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--ink4);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 10px;
+    }
+
+    .kw-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .kw-tag {
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.17s;
+      cursor: default;
+    }
+
+    .kw-tag:hover {
+      transform: translateY(-1px);
+    }
+
+    .kw-count {
+      background: rgba(0, 0, 0, 0.12);
+      padding: 1px 6px;
+      border-radius: 10px;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .kw-tag:nth-child(1) {
+      background: var(--accent-bg);
+      color: var(--accent);
+      border: 1px solid var(--accent-bd);
+    }
+
+    .kw-tag:nth-child(2) {
+      background: var(--teal-bg);
+      color: var(--teal);
+      border: 1px solid rgba(42, 157, 143, 0.2);
+    }
+
+    .kw-tag:nth-child(3) {
+      background: var(--amber-bg);
+      color: var(--amber);
+      border: 1px solid rgba(233, 162, 74, 0.2);
+    }
+
+    .kw-tag:nth-child(4) {
+      background: var(--violet-bg);
+      color: var(--violet);
+      border: 1px solid rgba(124, 111, 205, 0.2);
+    }
+
+    .kw-tag:nth-child(5) {
+      background: var(--navy-bg);
+      color: var(--navy);
+      border: 1px solid rgba(38, 70, 83, 0.15);
+    }
+
+    .kw-empty {
+      font-size: 13px;
+      color: var(--ink4);
+      font-style: italic;
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Sidebar ad */
+    .sidebar-ad {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      animation: fadeUp 0.45s ease 0.1s both;
+    }
+
+    .sa-head {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border2);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .sa-tag {
+      font-size: 9.5px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink4);
+      background: var(--bg2);
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+
+    .sa-body {
+      height: 250px;
+      background: linear-gradient(145deg, #f8f7f4, #ece9e3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink4);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sa-body::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(26, 24, 20, 0.012) 10px, rgba(26, 24, 20, 0.012) 20px);
+    }
+
+    /* Tips card */
+    .tips-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      animation: fadeUp 0.45s ease 0.15s both;
+    }
+
+    .tc-head {
+      padding: 16px 18px 12px;
+      border-bottom: 1px solid var(--border2);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tc-icon {
+      width: 28px;
+      height: 28px;
+      background: var(--accent-bg);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+
+    .tips-list {
+      padding: 12px;
+    }
+
+    .tip-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 9px 8px;
+      border-radius: 8px;
+      transition: background 0.15s;
+    }
+
+    .tip-item:hover {
+      background: var(--bg);
+    }
+
+    .tip-bullet {
+      width: 22px;
+      height: 22px;
+      background: var(--accent-bg);
+      border: 1px solid var(--accent-bd);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--accent);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .tip-text {
+      font-size: 12.5px;
+      color: var(--ink2);
+      line-height: 1.5;
+    }
+
+    .tip-text strong {
+      color: var(--ink);
+    }
+
+    /* Social proof */
+    .social-card {
+      background: linear-gradient(135deg, var(--ink) 0%, #2a2620 100%);
+      border-radius: var(--r);
+      padding: 20px 18px;
+      color: white;
+      box-shadow: var(--shadow-lg);
+      animation: fadeUp 0.45s ease 0.2s both;
+    }
+
+    .sc-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      font-weight: 800;
+      color: white;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .sc-label {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.55);
+      margin-bottom: 14px;
+    }
+
+    .sc-stars {
+      color: var(--amber);
+      font-size: 16px;
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+    }
+
+    .sc-quote {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.7);
+      font-style: italic;
+      line-height: 1.6;
+    }
+
+    .sc-author {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.4);
+      margin-top: 8px;
+    }
+
+    /* Sidebar ad bottom */
+    .sa-bottom {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      animation: fadeUp 0.45s ease 0.25s both;
+    }
+
+    .sab-body {
+      height: 600px;
+      background: linear-gradient(145deg, #f8f7f4, #ece9e3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink4);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      flex-direction: column;
+      gap: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sab-body::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(26, 24, 20, 0.012) 10px, rgba(26, 24, 20, 0.012) 20px);
+    }
+
+    /* ── SEO CONTENT ── */
+    .seo-section {
+      max-width: 1260px;
+      margin: 0 auto;
+      padding: 0 24px 60px;
+    }
+
+    .seo-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .seo-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 24px;
+      transition: all 0.22s;
+    }
+
+    .seo-card:hover {
+      box-shadow: var(--shadow);
+      transform: translateY(-2px);
+    }
+
+    .seo-card-icon {
+      font-size: 28px;
+      margin-bottom: 12px;
+    }
+
+    .seo-card-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+
+    .seo-card-text {
+      font-size: 13px;
+      color: var(--ink3);
+      line-height: 1.65;
+    }
+
+    /* FAQ */
+    .faq-wrap {
+      max-width: 780px;
+    }
+
+    .faq-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 800;
+      margin-bottom: 20px;
+      color: var(--ink);
+    }
+
+    .faq-item {
+      border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+      margin-bottom: 8px;
+      background: white;
+      overflow: hidden;
+      transition: all 0.2s;
+    }
+
+    .faq-item:hover {
+      border-color: var(--border2);
+    }
+
+    .faq-q {
+      padding: 16px 20px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .faq-arrow {
+      color: var(--ink4);
+      font-size: 18px;
+      transition: transform 0.2s;
+      flex-shrink: 0;
+    }
+
+    .faq-a {
+      padding: 0 20px;
+      font-size: 13.5px;
+      color: var(--ink3);
+      line-height: 1.7;
+      max-height: 0;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .faq-item.open .faq-a {
+      max-height: 200px;
+      padding-bottom: 16px;
+    }
+
+    .faq-item.open .faq-arrow {
+      transform: rotate(180deg);
+    }
+
+    .faq-item.open .faq-q {
+      color: var(--accent);
+    }
+
+    /* ── BOTTOM AD ── */
+    .ad-bottom-wrap {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ad-bottom {
+      width: 970px;
+      max-width: 100%;
+      height: 90px;
+      background: white;
+      border: 1.5px dashed var(--border);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink4);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ad-bottom::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(26, 24, 20, 0.012) 10px, rgba(26, 24, 20, 0.012) 20px);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--ink);
+      color: rgba(255, 255, 255, 0.5);
+      padding: 28px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12.5px;
+    }
+
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 16px;
+      font-weight: 800;
+      color: white;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .footer-links a {
+      color: rgba(255, 255, 255, 0.4);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .footer-links a:hover {
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    /* Utility */
+    .num-animate {
+      display: inline-block;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- TOP NAV -->
+  <nav class="topnav">
+    <a class="nav-logo" href="#">
+      <span class="nav-logo-dot"></span>
+      WordCount<span style="color:var(--accent)">Pro</span>
+    </a>
+    <div class="nav-links">
+      <a class="nav-link active" href="#">Word Counter</a>
+      <a class="nav-link" href="#">Character Counter</a>
+      <a class="nav-link" href="#">Readability</a>
+      <a class="nav-link" href="#">More Tools</a>
+    </div>
+    <div class="nav-right">
+      <div class="dark-toggle-wrap">
+        <span>🌙</span>
+        <button class="dark-toggle" id="darkToggle" onclick="toggleDark()" title="Toggle dark mode"></button>
+      </div>
+      <div class="nav-cta">Try Premium →</div>
+    </div>
+  </nav>
+  <!-- Paste toast -->
+  <div id="paste-toast">📋 Paste detected!</div>
+
+  <!-- TOP AD BANNER (728×90 Leaderboard) -->
+  <div class="ad-banner-top">
+    <div class="ad-placeholder">
+      <div class="ad-label-chip">Ad</div>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="3" width="18" height="18" rx="2" />
+        <path d="M3 9h18" />
+      </svg>
+      728 × 90 — Leaderboard Banner
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eyebrow">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
+      </svg>
+      Free · Instant · No Sign-up
+    </div>
+    <h1 class="hero-title">The Smartest<br><span>Word Counter</span> Online</h1>
+    <p class="hero-sub">Count words, characters, sentences, paragraphs and reading time — all in real time as you type.
+    </p>
+  </div>
+
+  <!-- MAIN PAGE WRAP -->
+  <div class="page-wrap">
+
+    <!-- TOOL CARD -->
+    <div>
+      <div class="tool-card">
+        <!-- Toolbar -->
+        <div class="tool-toolbar">
+          <button class="toolbar-btn" onclick="clearText()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polyline points="3 6 5 6 21 6" />
+              <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+              <path d="M10 11v6" />
+              <path d="M14 11v6" />
+            </svg>
+            Clear
+          </button>
+          <button class="toolbar-btn" onclick="copyText()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <rect x="9" y="9" width="13" height="13" rx="2" />
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+            </svg>
+            Copy Text
+          </button>
+          <button class="toolbar-btn" id="copyStatsBtn" onclick="copyStats()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2" />
+              <rect x="9" y="3" width="6" height="4" rx="1" />
+              <line x1="9" y1="12" x2="15" y2="12" />
+              <line x1="9" y1="16" x2="13" y2="16" />
+            </svg>
+            Copy Stats
+          </button>
+          <div class="toolbar-sep"></div>
+          <button class="toolbar-btn" onclick="pasteText()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+              <rect x="8" y="2" width="8" height="4" rx="1" />
+            </svg>
+            Paste
+          </button>
+          <div class="toolbar-right">
+            <button class="toolbar-btn accent" onclick="downloadStats()">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" y1="15" x2="12" y2="3" />
+              </svg>
+              Export Stats
+            </button>
+          </div>
+        </div>
+
+        <!-- Textarea -->
+        <div class="textarea-wrap">
+          <textarea id="inputText"
+            placeholder="Start typing or paste your text here… Your stats update instantly as you write."
+            oninput="analyze()" spellcheck="true"></textarea>
+          <div class="char-counter-float" id="charFloat">0 chars</div>
+        </div>
+
+        <!-- Stats Row -->
+        <div class="stats-row">
+          <div class="stat-cell">
+            <span class="stat-num" id="s-words">0</span>
+            <div class="stat-label">Words</div>
+          </div>
+          <div class="stat-cell">
+            <span class="stat-num" id="s-chars">0</span>
+            <div class="stat-label">Characters</div>
+          </div>
+          <div class="stat-cell">
+            <span class="stat-num" id="s-chars-ns">0</span>
+            <div class="stat-label">No Spaces</div>
+          </div>
+          <div class="stat-cell">
+            <span class="stat-num" id="s-sent">0</span>
+            <div class="stat-label">Sentences</div>
+          </div>
+          <div class="stat-cell">
+            <span class="stat-num" id="s-para">0</span>
+            <div class="stat-label">Paragraphs</div>
+          </div>
+          <div class="stat-cell">
+            <span class="stat-num" id="s-read" style="font-size:18px">—</span>
+            <div class="stat-label">Read Time</div>
+          </div>
+        </div>
+
+        <!-- Inline ad -->
+        <div class="ad-inline">
+          <div class="ad-rect">
+            <div class="ad-label-chip">Ad</div>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="18" height="18" rx="2" />
+            </svg>
+            728 × 100 — In-Content Banner
+          </div>
+        </div>
+
+        <!-- Detail stats -->
+        <div class="detail-section">
+          <div class="ds-title">Detailed Analysis</div>
+          <div class="detail-grid">
+            <div class="detail-item">
+              <span class="di-label">Avg. word length</span>
+              <span class="di-val" id="d-avgword">—</span>
+            </div>
+            <div class="detail-item">
+              <span class="di-label">Longest word</span>
+              <span class="di-val" id="d-longest">—</span>
+            </div>
+            <div class="detail-item">
+              <span class="di-label">Unique words</span>
+              <span class="di-val" id="d-unique">—</span>
+            </div>
+            <div class="detail-item">
+              <span class="di-label">Avg words/sentence</span>
+              <span class="di-val" id="d-avgsentword">—</span>
+            </div>
+            <div class="detail-item">
+              <span class="di-label">Speaking time</span>
+              <span class="di-val" id="d-speak">—</span>
+            </div>
+            <div class="detail-item">
+              <span class="di-label">Lines</span>
+              <span class="di-val" id="d-lines">—</span>
+            </div>
+            <div class="detail-item">
+              <span class="di-label">Lexical density</span>
+              <span class="di-val" id="d-lex">—</span>
+            </div>
+          </div>
+
+          <!-- Reading bar -->
+          <div class="reading-bar-wrap">
+            <div class="rbar-label">
+              <span>Reading progress gauge</span>
+              <span id="rbar-pct">0%</span>
+            </div>
+            <div class="rbar-track">
+              <div class="rbar-fill" id="rbar-fill"></div>
+            </div>
+          </div>
+
+          <!-- Keywords -->
+          <div class="keywords-wrap">
+            <div class="kw-title">Top Keywords</div>
+            <div class="kw-list" id="kw-list">
+              <span class="kw-empty">Start typing to see top keywords…</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SEO cards -->
+      <div style="margin-top:28px;">
+        <div class="seo-grid">
+          <div class="seo-card">
+            <div class="seo-card-icon">⚡</div>
+            <div class="seo-card-title">Real-Time Analysis</div>
+            <div class="seo-card-text">Every metric updates instantly as you type. No button clicks needed — just pure,
+              live feedback on your writing.</div>
+          </div>
+          <div class="seo-card">
+            <div class="seo-card-icon">🔒</div>
+            <div class="seo-card-title">100% Private</div>
+            <div class="seo-card-text">Your text never leaves your browser. Everything is processed locally — no
+              servers, no storage, no tracking.</div>
+          </div>
+          <div class="seo-card">
+            <div class="seo-card-icon">📊</div>
+            <div class="seo-card-title">Deep Metrics</div>
+            <div class="seo-card-text">Beyond basic counts — get lexical density, keyword frequency, longest words,
+              speaking time and more.</div>
+          </div>
+        </div>
+
+        <!-- FAQ -->
+        <div class="faq-wrap">
+          <h2 class="faq-title">Frequently Asked Questions</h2>
+
+          <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-q">How does the word counter work? <span class="faq-arrow">↓</span></div>
+            <div class="faq-a">Our tool splits your text by spaces and punctuation to count words accurately. Characters
+              are counted individually, including spaces. Sentences are detected by periods, exclamation marks, and
+              question marks. Everything runs in your browser — there's no server involved.</div>
+          </div>
+          <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-q">Does it work for SEO content writing? <span class="faq-arrow">↓</span></div>
+            <div class="faq-a">Absolutely. The keyword density feature shows you which words appear most often, helping
+              you optimize content naturally. The reading time estimate helps you match target page lengths for blog
+              posts, landing pages, and articles.</div>
+          </div>
+          <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-q">What is lexical density? <span class="faq-arrow">↓</span></div>
+            <div class="faq-a">Lexical density is the ratio of unique "content" words to total words. A higher density
+              (above 50%) generally indicates more informative, complex writing. Academic writing typically scores
+              40–60%, while conversational text scores lower.</div>
+          </div>
+          <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-q">How is reading time calculated? <span class="faq-arrow">↓</span></div>
+            <div class="faq-a">We use the standard average of 238 words per minute for silent reading and 150 words per
+              minute for speaking aloud — both widely cited in reading research. These are approximations; individual
+              reading speeds vary.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+
+      <!-- Sidebar ad top (300×250) -->
+      <div class="sidebar-ad">
+        <div class="sa-head">
+          <span class="sa-tag">Advertisement</span>
+        </div>
+        <div class="sa-body">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="18" height="18" rx="2" />
+          </svg>
+          300 × 250 — Medium Rectangle
+        </div>
+      </div>
+
+      <!-- Tips card -->
+      <div class="tips-card">
+        <div class="tc-head">
+          <div class="tc-icon">✍️</div>
+          Writing Tips
+        </div>
+        <div class="tips-list">
+          <div class="tip-item">
+            <div class="tip-bullet">1</div>
+            <div class="tip-text"><strong>Blog posts</strong> perform best at 1,500–2,500 words for SEO.</div>
+          </div>
+          <div class="tip-item">
+            <div class="tip-bullet">2</div>
+            <div class="tip-text"><strong>Email subject lines</strong> should be under 50 characters for mobile.</div>
+          </div>
+          <div class="tip-item">
+            <div class="tip-bullet">3</div>
+            <div class="tip-text"><strong>Twitter/X threads</strong> allow 280 characters per tweet.</div>
+          </div>
+          <div class="tip-item">
+            <div class="tip-bullet">4</div>
+            <div class="tip-text"><strong>Meta descriptions</strong> are ideal between 150–160 characters.</div>
+          </div>
+          <div class="tip-item">
+            <div class="tip-bullet">5</div>
+            <div class="tip-text"><strong>LinkedIn posts</strong> see peak engagement at ~1,300 characters.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Social proof -->
+      <div class="social-card">
+        <div class="sc-num">2.4M+</div>
+        <div class="sc-label">words counted this month</div>
+        <div class="sc-stars">★★★★★</div>
+        <div class="sc-quote">"The cleanest word counter I've found. Keyword density alone makes it worth bookmarking."
+        </div>
+        <div class="sc-author">— Sarah K., Content Strategist</div>
+      </div>
+
+      <!-- Sidebar ad bottom (300×600) -->
+      <div class="sa-bottom">
+        <div class="sa-head" style="padding:10px 14px;border-bottom:1px solid var(--border);">
+          <span class="sa-tag">Advertisement</span>
+        </div>
+        <div class="sab-body">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="18" height="18" rx="2" />
+          </svg>
+          300 × 600 — Half Page
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BOTTOM AD (970×90) -->
+  <div class="ad-bottom-wrap">
+    <div class="ad-bottom">
+      <div class="ad-label-chip">Ad</div>
+      970 × 90 — Billboard Banner
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">WordCountPro</div>
+    <div class="footer-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Use</a>
+      <a href="#">Contact</a>
+      <a href="#">Advertise</a>
+      <a href="#">Sitemap</a>
+    </div>
+    <div>© 2026 WordCountPro. All rights reserved.</div>
+  </footer>
+
+  <script>
+    // ── DARK MODE ──
+    function toggleDark() {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+      localStorage.setItem('wc-theme', isDark ? 'light' : 'dark');
+    }
+    (function () {
+      const saved = localStorage.getItem('wc-theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (saved === 'dark' || (!saved && prefersDark)) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+
+    // ── PASTE TOAST ──
+    function showPasteToast() {
+      const toast = document.getElementById('paste-toast');
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2200);
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('inputText').addEventListener('paste', () => {
+        setTimeout(showPasteToast, 50);
+      });
+    });
+
+    // ── STOP WORDS (excluded from keywords) ──
+    const STOP = new Set(['the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by', 'from', 'is', 'was', 'are', 'were', 'be', 'been', 'being', 'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'could', 'should', 'may', 'might', 'shall', 'that', 'this', 'these', 'those', 'it', 'its', 'he', 'she', 'they', 'we', 'you', 'i', 'me', 'him', 'her', 'us', 'them', 'what', 'which', 'who', 'how', 'when', 'where', 'why', 'not', 'no', 'as', 'if', 'so', 'up', 'out', 'about', 'into', 'then', 'than', 'can', 'just', 'also', 'more', 'some', 'any', 'all', 'one', 'two', 'three', 'their', 'there', 'here', 'my', 'your', 'his', 'her', 'our', 'your', 'its']);
+
+    let prevCounts = {};
+
+    // ── READING TIME FORMATTER ──
+    function fmtTime(totalSeconds) {
+      if (totalSeconds < 60) return totalSeconds + 's';
+      const m = Math.floor(totalSeconds / 60);
+      const s = totalSeconds % 60;
+      return s > 0 ? m + 'm ' + s + 's' : m + 'm';
+    }
+
+    function analyze() {
+      const text = document.getElementById('inputText').value;
+
+      // Core counts
+      const words = text.trim() === '' ? [] : text.trim().split(/\s+/).filter(w => w.length > 0);
+      const wordCount = words.length;
+      const charCount = text.length;
+      const charNoSpaces = text.replace(/\s/g, '').length;
+      const sentences = text.trim() === '' ? 0 : (text.match(/[.!?]+/g) || []).length || (text.trim() ? 1 : 0);
+      const paragraphs = text.trim() === '' ? 0 : text.split(/\n\s*\n/).filter(p => p.trim().length > 0).length || (text.trim() ? 1 : 0);
+      // Precise reading/speaking time in seconds
+      const readSecs = Math.round((wordCount / 238) * 60);
+      const speakSecs = Math.round((wordCount / 150) * 60);
+      const lines = text.trim() === '' ? 0 : text.split('\n').length;
+
+      // Avg word length
+      const avgWordLen = words.length ? (words.reduce((s, w) => s + w.replace(/[^a-zA-Z]/g, '').length, 0) / words.length).toFixed(1) : 0;
+
+      // Longest word
+      const longest = words.reduce((a, w) => {
+        const clean = w.replace(/[^a-zA-Z]/g, '');
+        return clean.length > a.length ? clean : a;
+      }, '');
+
+      // Unique words
+      const unique = new Set(words.map(w => w.toLowerCase().replace(/[^a-z]/g, ''))).size;
+
+      // Lexical density
+      const lexDensity = wordCount ? Math.round((unique / wordCount) * 100) + '%' : '—';
+
+      // Reading bar (cap at 2000 words = 100%)
+      const barPct = Math.min(100, Math.round((wordCount / 2000) * 100));
+
+      // Keywords
+      const freq = {};
+      words.forEach(w => {
+        const clean = w.toLowerCase().replace(/[^a-z]/g, '');
+        if (clean.length > 2 && !STOP.has(clean)) {
+          freq[clean] = (freq[clean] || 0) + 1;
+        }
+      });
+      const topKw = Object.entries(freq).sort((a, b) => b[1] - a[1]).slice(0, 5);
+
+      // Update UI
+      updateStat('s-words', wordCount, 'words');
+      updateStat('s-chars', charCount, 'chars');
+      updateStat('s-chars-ns', charNoSpaces, 'chars-ns');
+      updateStat('s-sent', sentences, 'sent');
+      updateStat('s-para', paragraphs, 'para');
+      document.getElementById('s-read').textContent = wordCount === 0 ? '—' : fmtTime(readSecs);
+
+      // Avg words per sentence
+      const avgWordsPerSent = sentences > 0 ? (wordCount / sentences).toFixed(1) : '—';
+
+      document.getElementById('charFloat').textContent = charCount.toLocaleString() + ' chars';
+      document.getElementById('d-avgword').textContent = avgWordLen ? avgWordLen + ' chr' : '—';
+      document.getElementById('d-longest').textContent = longest || '—';
+      document.getElementById('d-unique').textContent = unique || '—';
+      document.getElementById('d-avgsentword').textContent = avgWordsPerSent;
+      document.getElementById('d-speak').textContent = wordCount === 0 ? '—' : fmtTime(speakSecs);
+      document.getElementById('d-lines').textContent = lines || '—';
+      document.getElementById('d-lex').textContent = lexDensity;
+
+      document.getElementById('rbar-fill').style.width = barPct + '%';
+      document.getElementById('rbar-pct').textContent = barPct + '%';
+
+      // Keywords
+      const kwList = document.getElementById('kw-list');
+      if (topKw.length === 0) {
+        kwList.innerHTML = '<span class="kw-empty">Start typing to see top keywords…</span>';
+      } else {
+        kwList.innerHTML = topKw.map(([word, count]) =>
+          `<div class="kw-tag">${word}<span class="kw-count">×${count}</span></div>`
+        ).join('');
+      }
+
+      prevCounts = { wordCount, charCount, charNoSpaces, sentences, paragraphs };
+    }
+
+    function updateStat(id, val, key) {
+      const el = document.getElementById(id);
+      const prev = prevCounts[key] ?? -1;
+      el.textContent = val.toLocaleString();
+      if (val !== prev) {
+        el.classList.remove('stat-bounce');
+        void el.offsetWidth;
+        el.classList.add('stat-bounce');
+        setTimeout(() => el.classList.remove('stat-bounce'), 400);
+      }
+    }
+
+    function clearText() {
+      document.getElementById('inputText').value = '';
+      analyze();
+    }
+
+    async function copyText() {
+      const text = document.getElementById('inputText').value;
+      if (text) {
+        await navigator.clipboard.writeText(text);
+        const btn = event.target.closest('.toolbar-btn');
+        const orig = btn.innerHTML;
+        btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Copied!';
+        setTimeout(() => btn.innerHTML = orig, 1800);
+      }
+    }
+
+    async function copyStats() {
+      const text = document.getElementById('inputText').value;
+      const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+      const sents = (text.match(/[.!?]+/g) || []).length || (text.trim() ? 1 : 0);
+      const readSecs = Math.round((words / 238) * 60);
+      const stats = [
+        `Words: ${words}`,
+        `Characters (with spaces): ${text.length}`,
+        `Characters (no spaces): ${text.replace(/\s/g, '').length}`,
+        `Sentences: ${sents}`,
+        `Paragraphs: ${text.split(/\n\s*\n/).filter(p => p.trim()).length || (text.trim() ? 1 : 0)}`,
+        `Reading time: ${fmtTime(readSecs)}`,
+        `Speaking time: ${fmtTime(Math.round((words / 150) * 60))}`,
+      ].join('\n');
+      await navigator.clipboard.writeText(stats);
+      const btn = document.getElementById('copyStatsBtn');
+      const orig = btn.innerHTML;
+      btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Copied!';
+      setTimeout(() => btn.innerHTML = orig, 1800);
+    }
+
+    async function pasteText() {
+      try {
+        const text = await navigator.clipboard.readText();
+        document.getElementById('inputText').value = text;
+        analyze();
+      } catch (e) {
+        document.getElementById('inputText').focus();
+      }
+    }
+
+    function downloadStats() {
+      const text = document.getElementById('inputText').value;
+      const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+      const report = `WordCountPro — Text Analysis Report
+Generated: ${new Date().toLocaleString()}
+${'─'.repeat(40)}
+Words:           ${words}
+Characters:      ${text.length}
+Chars (no sp):   ${text.replace(/\s/g, '').length}
+Sentences:       ${(text.match(/[.!?]+/g) || []).length}
+Paragraphs:      ${text.split(/\n\s*\n/).filter(p => p.trim()).length || (text.trim() ? 1 : 0)}
+Reading Time:    ${Math.ceil(words / 238)} min
+Speaking Time:   ${Math.ceil(words / 150)} min
+${'─'.repeat(40)}
+Text Preview:
+${text.slice(0, 300)}${text.length > 300 ? '…' : ''}
+`;
+      const a = document.createElement('a');
+      a.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(report);
+      a.download = 'wordcount-report.txt';
+      a.click();
+    }
+
+    function toggleFaq(el) {
+      const isOpen = el.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(f => f.classList.remove('open'));
+      if (!isOpen) el.classList.add('open');
+    }
+  </script>
+</body>
+
+</html>

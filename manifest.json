@@ -1,0 +1,21 @@
+{
+  "name": "Free Online Word Counter",
+  "short_name": "WordCountPro",
+  "description": "Real-time word, character, sentence and reading time counter.",
+  "start_url": "/word-counter.html",
+  "display": "standalone",
+  "background_color": "#FAFAF8",
+  "theme_color": "#E8593A",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
