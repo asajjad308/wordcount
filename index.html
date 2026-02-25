@@ -340,11 +340,50 @@
       letter-spacing: 0.06em;
     }
 
+    /* ── BIG STATS BAR ── */
+    .big-stats-wrap {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 24px 32px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      box-shadow: var(--shadow);
+      animation: fadeUp 0.4s ease both;
+    }
+
+    .bs-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .bs-val {
+      font-family: 'Playfair Display', serif;
+      font-size: 38px;
+      font-weight: 800;
+      color: var(--ink);
+      line-height: 1;
+    }
+
+    .bs-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink3);
+      margin-top: 4px;
+    }
+
+    [data-theme="dark"] .big-stats-wrap {
+      background: #221F2A;
+      border-color: var(--border);
+    }
+
     /* ── HERO ── */
     .hero {
       text-align: center;
       padding: 52px 20px 36px;
-      max-width: 720px;
+      max-width: 820px;
       margin: 0 auto;
     }
 
@@ -458,6 +497,30 @@
 
     .toolbar-btn.accent:hover {
       background: #d44d30;
+    }
+
+    .toolbar-select {
+      padding: 6px 12px;
+      border-radius: 7px;
+      font-size: 12.5px;
+      font-weight: 600;
+      border: 1px solid var(--border);
+      background: white;
+      color: var(--ink2);
+      cursor: pointer;
+      outline: none;
+      transition: all 0.17s;
+    }
+
+    .toolbar-select:hover {
+      border-color: var(--ink3);
+      color: var(--ink);
+    }
+
+    [data-theme="dark"] .toolbar-select {
+      background: #2C2B33;
+      color: var(--ink2);
+      border-color: var(--border);
     }
 
     .toolbar-sep {
@@ -795,6 +858,58 @@
       font-size: 13px;
       color: var(--ink4);
       font-style: italic;
+    }
+
+    /* ── PROGRESS CIRCLE ── */
+    .goal-wrap {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 20px;
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+    }
+
+    .goal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .goal-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .goal-input {
+      width: 80px;
+      padding: 4px 8px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .goal-progress-bar {
+      height: 10px;
+      background: var(--bg2);
+      border-radius: 5px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+
+    .goal-fill {
+      height: 100%;
+      background: var(--teal);
+      width: 0%;
+      transition: width 0.4s ease;
+    }
+
+    [data-theme="dark"] .goal-wrap {
+      background: #221F2A;
     }
 
     /* ── SIDEBAR ── */
@@ -1253,6 +1368,22 @@
 
     <!-- TOOL CARD -->
     <div>
+      <!-- BIG STATS PANEL -->
+      <div class="big-stats-wrap">
+        <div class="bs-item">
+          <span class="bs-val" id="b-words">0</span>
+          <span class="bs-label">Words</span>
+        </div>
+        <div class="bs-item">
+          <span class="bs-val" id="b-chars">0</span>
+          <span class="bs-label">Characters</span>
+        </div>
+        <div class="bs-item" style="margin-left:auto;">
+          <div id="check-btn" class="nav-cta" style="background:var(--teal); padding: 10px 24px; font-size: 14px;">Check
+            for writing issues</div>
+        </div>
+      </div>
+
       <div class="tool-card">
         <!-- Toolbar -->
         <div class="tool-toolbar">
@@ -1281,6 +1412,14 @@
             </svg>
             Copy Stats
           </button>
+          <div class="toolbar-sep"></div>
+          <select class="toolbar-select" onchange="convertCase(this.value); this.value=''">
+            <option value="" disabled selected>More Tasks</option>
+            <option value="upper">UPPERCASE</option>
+            <option value="lower">lowercase</option>
+            <option value="title">Title Case</option>
+            <option value="sentence">Sentence case</option>
+          </select>
           <div class="toolbar-sep"></div>
           <button class="toolbar-btn" onclick="pasteText()">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -1380,6 +1519,16 @@
               <span class="di-label">Lexical density</span>
               <span class="di-val" id="d-lex">—</span>
             </div>
+            <div class="detail-item">
+              <span class="di-label">Active Time</span>
+              <span class="di-val" id="d-active">0s</span>
+            </div>
+            <div class="detail-item"
+              style="grid-column: span 2; background: var(--accent-bg); border-color: var(--accent-bd);">
+              <span class="di-label" style="color: var(--accent);">Readability Level</span>
+              <span class="di-val" id="d-grade"
+                style="background: var(--accent); color: white; border: none; font-weight: 700;">—</span>
+            </div>
           </div>
 
           <!-- Reading bar -->
@@ -1460,6 +1609,21 @@
 
     <!-- SIDEBAR -->
     <div class="sidebar">
+
+      <!-- WRITING GOAL -->
+      <div class="goal-wrap">
+        <div class="goal-head">
+          <span class="goal-title">🎯 Writing Goal</span>
+          <input type="number" id="goalVal" class="goal-input" value="500" oninput="analyze()">
+        </div>
+        <div class="rbar-label">
+          <span id="goal-text">0 / 500 words</span>
+          <span id="goal-pct">0%</span>
+        </div>
+        <div class="goal-progress-bar">
+          <div class="goal-fill" id="goal-fill"></div>
+        </div>
+      </div>
 
       <!-- Sidebar ad top (300×250) -->
       <div class="sidebar-ad">
@@ -1582,6 +1746,22 @@
     const STOP = new Set(['the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by', 'from', 'is', 'was', 'are', 'were', 'be', 'been', 'being', 'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'could', 'should', 'may', 'might', 'shall', 'that', 'this', 'these', 'those', 'it', 'its', 'he', 'she', 'they', 'we', 'you', 'i', 'me', 'him', 'her', 'us', 'them', 'what', 'which', 'who', 'how', 'when', 'where', 'why', 'not', 'no', 'as', 'if', 'so', 'up', 'out', 'about', 'into', 'then', 'than', 'can', 'just', 'also', 'more', 'some', 'any', 'all', 'one', 'two', 'three', 'their', 'there', 'here', 'my', 'your', 'his', 'her', 'our', 'your', 'its']);
 
     let prevCounts = {};
+    let activeSeconds = 0;
+    let lastTypeTime = 0;
+
+    // ── ACTIVITY TRACKER ──
+    setInterval(() => {
+      const now = Date.now();
+      if (now - lastTypeTime < 3000 && lastTypeTime !== 0) {
+        activeSeconds++;
+        document.getElementById('d-active').textContent = fmtTime(activeSeconds);
+      }
+    }, 1000);
+
+    document.getElementById('inputText').oninput = () => {
+      lastTypeTime = Date.now();
+      analyze();
+    };
 
     // ── READING TIME FORMATTER ──
     function fmtTime(totalSeconds) {
@@ -1624,7 +1804,7 @@
       // Reading bar (cap at 2000 words = 100%)
       const barPct = Math.min(100, Math.round((wordCount / 2000) * 100));
 
-      // Keywords
+      // Keywords & Density
       const freq = {};
       words.forEach(w => {
         const clean = w.toLowerCase().replace(/[^a-z]/g, '');
@@ -1634,7 +1814,23 @@
       });
       const topKw = Object.entries(freq).sort((a, b) => b[1] - a[1]).slice(0, 5);
 
+      // Readability (Coleman-Liau)
+      let gradeLabel = '—';
+      if (wordCount > 5) {
+        const letters = text.replace(/[^a-zA-Z]/g, '').length;
+        const L = (letters / wordCount) * 100;
+        const S = (sentences / wordCount) * 100;
+        const index = 0.0588 * L - 0.296 * S - 15.8;
+        const grade = Math.round(index);
+        if (grade < 1) gradeLabel = 'Kindergarten';
+        else if (grade >= 17) gradeLabel = 'College Graduate';
+        else gradeLabel = 'Grade ' + grade;
+      }
+
       // Update UI
+      document.getElementById('b-words').textContent = wordCount.toLocaleString();
+      document.getElementById('b-chars').textContent = charCount.toLocaleString();
+
       updateStat('s-words', wordCount, 'words');
       updateStat('s-chars', charCount, 'chars');
       updateStat('s-chars-ns', charNoSpaces, 'chars-ns');
@@ -1653,18 +1849,27 @@
       document.getElementById('d-speak').textContent = wordCount === 0 ? '—' : fmtTime(speakSecs);
       document.getElementById('d-lines').textContent = lines || '—';
       document.getElementById('d-lex').textContent = lexDensity;
+      document.getElementById('d-grade').textContent = gradeLabel;
 
       document.getElementById('rbar-fill').style.width = barPct + '%';
       document.getElementById('rbar-pct').textContent = barPct + '%';
 
-      // Keywords
+      // Goal update
+      const goal = parseInt(document.getElementById('goalVal').value) || 0;
+      const goalPct = goal > 0 ? Math.min(100, Math.round((wordCount / goal) * 100)) : 0;
+      document.getElementById('goal-fill').style.width = goalPct + '%';
+      document.getElementById('goal-pct').textContent = goalPct + '%';
+      document.getElementById('goal-text').textContent = `${wordCount} / ${goal} words`;
+
+      // Keywords UI with percentages
       const kwList = document.getElementById('kw-list');
       if (topKw.length === 0) {
         kwList.innerHTML = '<span class="kw-empty">Start typing to see top keywords…</span>';
       } else {
-        kwList.innerHTML = topKw.map(([word, count]) =>
-          `<div class="kw-tag">${word}<span class="kw-count">×${count}</span></div>`
-        ).join('');
+        kwList.innerHTML = topKw.map(([word, count]) => {
+          const density = ((count / wordCount) * 100).toFixed(1);
+          return `<div class="kw-tag">${word}<span class="kw-count">${density}%</span></div>`;
+        }).join('');
       }
 
       prevCounts = { wordCount, charCount, charNoSpaces, sentences, paragraphs };
@@ -1680,6 +1885,26 @@
         el.classList.add('stat-bounce');
         setTimeout(() => el.classList.remove('stat-bounce'), 400);
       }
+    }
+
+    // ── CASE CONVERSION ──
+    function convertCase(type) {
+      const textarea = document.getElementById('inputText');
+      let val = textarea.value;
+      if (!val) return;
+
+      switch (type) {
+        case 'upper': val = val.toUpperCase(); break;
+        case 'lower': val = val.toLowerCase(); break;
+        case 'title':
+          val = val.toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+          break;
+        case 'sentence':
+          val = val.toLowerCase().replace(/(^\s*\w|[\.\!\?]\s*\w)/g, c => c.toUpperCase());
+          break;
+      }
+      textarea.value = val;
+      analyze();
     }
 
     function clearText() {
